@@ -54,9 +54,9 @@ O Sistema de Aluguel de Carros é uma aplicação web projetada para facilitar o
 4.1 Atividades e Responsabilidades
 Atividade	Responsável
 - Modelagem do banco de dados |	Walter Theodoro
-- Implementação da API REST |	Luiz Fernando
+- Implementação da API REST |	Walter Theodoro
 - Desenvolvimento do front-end	| Luiz Fernando
-- Integração do front-end com a API |	Walter Theodoro
+- Integração do front-end com a API |	Luiz Fernando
 - Implementação da autenticação (JWT)	| Walter Theodoro
 - Testes e depuração  |	Luiz Fernando
 - Documentação e deploy |	Ambos
