@@ -16,7 +16,7 @@ router.get('/carros', async (req, res) => {
 router.get('/carros/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const [rows] = await db.query('SELECT * FROM carros WHERE id = ?', [id]);
+        const [rows] = await db.query('SELECT * FROM carros WHERE id_carro = ?', [id]);
         if (rows.length === 0) {
             return res.status(404).json({ error: 'Carro não encontrado' });
         }
@@ -26,23 +26,30 @@ router.get('/carros/:id', async (req, res) => {
     }
 });
 
+
 // Adicionar um novo carro
 router.post('/carros', async (req, res) => {
-    const { modelo, marca, ano, preco } = req.body;
+    const { modelo, marca, ano, preco_diario } = req.body; // Ajuste o nome da variável conforme a tabela
     try {
-        const [result] = await db.query('INSERT INTO carros (modelo, marca, ano, preco) VALUES (?, ?, ?, ?)', [modelo, marca, ano, preco]);
-        res.status(201).json({ id: result.insertId, modelo, marca, ano, preco });
+        const [result] = await db.query('INSERT INTO carros (modelo, marca, ano, preco_diario) VALUES (?, ?, ?, ?)', [modelo, marca, ano, preco_diario]);
+        res.status(201).json({ id_carro: result.insertId, modelo, marca, ano, preco_diario });
     } catch (error) {
+        console.error('Erro no POST:', error);  // Log para detalhar o erro
         res.status(500).json({ error: 'Erro ao adicionar o carro' });
     }
 });
+
+
 
 // Atualizar um carro por ID
 router.put('/carros/:id', async (req, res) => {
     const { id } = req.params;
     const { modelo, marca, ano, preco } = req.body;
     try {
-        const [result] = await db.query('UPDATE carros SET modelo = ?, marca = ?, ano = ?, preco = ? WHERE id = ?', [modelo, marca, ano, preco, id]);
+        const [result] = await db.query(
+            'UPDATE carros SET modelo = ?, marca = ?, ano = ?, preco_diario = ? WHERE id_carro = ?',
+            [modelo, marca, ano, preco, id]
+        );
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Carro não encontrado' });
         }
@@ -52,11 +59,12 @@ router.put('/carros/:id', async (req, res) => {
     }
 });
 
+
 // Remover um carro por ID
 router.delete('/carros/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const [result] = await db.query('DELETE FROM carros WHERE id = ?', [id]);
+        const [result] = await db.query('DELETE FROM carros WHERE id_carro = ?', [id]);
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Carro não encontrado' });
         }
@@ -65,5 +73,6 @@ router.delete('/carros/:id', async (req, res) => {
         res.status(500).json({ error: 'Erro ao remover o carro' });
     }
 });
+
 
 module.exports = router;
